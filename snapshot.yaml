@@ -146,6 +146,30 @@ collections:
       versioning: false
     schema:
       name: completed_pages
+  - collection: directus_users
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: directus_users
+      color: null
+      display_template: '{{user_name}}'
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: directus_users
   - collection: library
     meta:
       accountability: all
@@ -505,7 +529,7 @@ fields:
       foreign_key_column: null
   - collection: asked_book
     field: requested_number
-    type: string
+    type: integer
     meta:
       collection: asked_book
       conditions: null
@@ -529,11 +553,11 @@ fields:
     schema:
       name: requested_number
       table: asked_book
-      data_type: varchar
+      data_type: int
       default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_indexed: false
@@ -696,7 +720,7 @@ fields:
       numeric_scale: null
       is_nullable: true
       is_unique: false
-      is_indexed: false
+      is_indexed: true
       is_primary_key: false
       is_generated: false
       generation_expression: null
@@ -930,6 +954,47 @@ fields:
       validation: null
       validation_message: null
       width: full
+  - collection: books
+    field: slug
+    type: string
+    meta:
+      collection: books
+      conditions: null
+      display: null
+      display_options: null
+      field: slug
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        slug: true
+      readonly: false
+      required: false
+      searchable: true
+      sort: 9
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: slug
+      table: books
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: true
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: books_category_list
     field: id
     type: integer
@@ -1269,7 +1334,8 @@ fields:
       required: false
       searchable: true
       sort: 4
-      special: null
+      special:
+        - date-created
       translations: null
       validation: null
       validation_message: null
@@ -1444,9 +1510,9 @@ fields:
       max_length: 255
       numeric_precision: null
       numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_indexed: false
+      is_nullable: false
+      is_unique: true
+      is_indexed: true
       is_primary_key: false
       is_generated: false
       generation_expression: null
@@ -1595,7 +1661,8 @@ fields:
       required: false
       searchable: true
       sort: 5
-      special: null
+      special:
+        - date-created
       translations: null
       validation: null
       validation_message: null
@@ -1618,19 +1685,21 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: directus_users
-    field: last_seen_at
-    type: date
+    field: slug
+    type: string
     meta:
       collection: directus_users
       conditions: null
-      display: null
+      display: raw
       display_options: null
-      field: last_seen_at
+      field: slug
       group: null
       hidden: false
-      interface: datetime
+      interface: input
       note: null
-      options: null
+      options:
+        placeholder: null
+        slug: true
       readonly: false
       required: false
       searchable: true
@@ -1641,11 +1710,11 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: last_seen_at
+      name: slug
       table: directus_users
-      data_type: date
+      data_type: varchar
       default_value: null
-      max_length: null
+      max_length: 255
       numeric_precision: null
       numeric_scale: null
       is_nullable: true
@@ -1971,8 +2040,9 @@ fields:
     meta:
       collection: messages_directus_users
       conditions: null
-      display: null
-      display_options: null
+      display: related-values
+      display_options:
+        template: '{{subject}}'
       field: messages_id
       group: null
       hidden: true
@@ -2016,9 +2086,10 @@ fields:
       field: directus_users_id
       group: null
       hidden: true
-      interface: null
+      interface: select-dropdown-m2o
       note: null
-      options: null
+      options:
+        template: '{{user_name}}'
       readonly: false
       required: false
       searchable: true
@@ -2067,7 +2138,7 @@ fields:
       readonly: false
       required: false
       searchable: true
-      sort: 4
+      sort: 5
       special: null
       translations: null
       validation: null
@@ -2114,7 +2185,7 @@ fields:
       readonly: false
       required: false
       searchable: true
-      sort: 5
+      sort: 6
       special: null
       translations: null
       validation: null
@@ -2137,6 +2208,48 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: messages_directus_users
+    field: sender
+    type: string
+    meta:
+      collection: messages_directus_users
+      conditions: null
+      display: null
+      display_options: null
+      field: sender
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{user_name}}'
+      readonly: false
+      required: true
+      searchable: true
+      sort: 7
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sender
+      table: messages_directus_users
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: true
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
 systemFields:
   - collection: directus_access
     field: policy
@@ -2564,5 +2677,26 @@ relations:
       foreign_key_table: messages
       foreign_key_column: id
       constraint_name: messages_directus_users_messages_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: messages_directus_users
+    field: sender
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: messages_directus_users
+      many_field: sender
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: messages_directus_users
+      column: sender
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: messages_directus_users_sender_foreign
       on_update: NO ACTION
       on_delete: SET NULL
