@@ -1,0 +1,11 @@
+.DS_Store
+node_modules
+*.log
+.fleet
+.idea
+.env
+
+uploads/*
+cache/*
+!cache/.gitkeep
+!uploads/.gitkeep
